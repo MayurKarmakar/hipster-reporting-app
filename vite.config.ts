@@ -15,7 +15,7 @@ export default defineConfig({
         "./ReportingApp": "./src/components/report-view.tsx",
       },
       remotes: {
-        storeApp: "http://localhost:3004/assets/remoteEntry.js",
+        storeApp: "https://hipster-store-app.netlify.app/assets/remoteEntry.js",
       },
       shared: ["react", "react-dom", "recharts"],
     }),
