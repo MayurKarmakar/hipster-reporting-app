@@ -71,7 +71,7 @@ export default function ReportView() {
     Booking[]
   >;
 
-  const isAdmin = user.role === 'admin'
+  const isAdmin = user?.role === 'admin'
 
   const flattenedBookings = Object.values(allBookings).flat();
 
