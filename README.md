@@ -17,7 +17,7 @@ pnpm install
 pnpm run dev
 ```
 
-Runs on `http://localhost:3003`
+Runs on `http://localhost:3003` 
 
 ### Build
 
