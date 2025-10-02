@@ -45,6 +45,16 @@ interface TheaterData {
   fill: string;
 }
 
+interface Booking {
+    id: string
+    movie: string
+    theaterLocation: string
+    date: string
+    time: string
+    seats: string[]
+    totalCost: number
+  }
+
 const COLORS = [
   "#8b5cf6",
   "#ec4899",
@@ -56,25 +66,14 @@ const COLORS = [
 
 export default function ReportView() {
   const user = useAppStore((state: any) => state.user);
-  // const allBookings = useAppStore((state: any) => state.allBookings) as Record<
-  //   string,
-  //   Booking[]
-  // >;
+  const allBookings = useAppStore((state: any) => state.allBookings) as Record<
+    string,
+    Booking[]
+  >;
 
-  const flattenedBookings = Object.values({
-    "bdcd92d6-c5a1-4260-a398-99c98f68f5ff": [
-      {
-        movie: "avatar",
-        theaterLocation: "Mall Multiplex - Shopping Center",
-        date: "2025-10-01",
-        time: "13:00",
-        seats: ["A7", "A6", "A5"],
-        totalCost: 38.97,
-        userId: "bdcd92d6-c5a1-4260-a398-99c98f68f5ff",
-        id: "1759407221618",
-      },
-    ],
-  }).flat();
+  const isAdmin = user.role === 'admin'
+
+  const flattenedBookings = Object.values(allBookings).flat();
 
   const totalRevenue = useMemo(() => {
     return flattenedBookings.reduce(
@@ -180,38 +179,34 @@ export default function ReportView() {
     );
   }
 
-  // if (!isAdmin) {
-  //   return (
-  //     <div className={cn("flex items-center justify-center p-6")}>
-  //       <Card className={cn("w-full max-w-md border-red-500")}>
-  //         <CardHeader>
-  //           <div className={cn("flex items-center gap-3")}>
-  //             <ShieldAlert className={cn("h-8 w-8 text-red-500")} />
-  //             <CardTitle className={cn("text-red-500")}>
-  //               Access Denied
-  //             </CardTitle>
-  //           </div>
-  //           <CardDescription>
-  //             You don't have permission to access this resource
-  //           </CardDescription>
-  //         </CardHeader>
-  //         <CardContent className={cn("space-y-3")}>
-  //           <p className={cn("text-sm text-slate-500 dark:text-slate-400")}>
-  //             The reporting dashboard is restricted to administrators only.
-  //           </p>
-  //           <p className={cn("text-sm text-slate-500 dark:text-slate-400")}>
-  //             Current role:{" "}
-  //             <span className={cn("font-medium")}>{userRole || "user"}</span>
-  //           </p>
-  //           <p className={cn("text-sm text-slate-500 dark:text-slate-400")}>
-  //             If you believe this is an error, please contact your system
-  //             administrator.
-  //           </p>
-  //         </CardContent>
-  //       </Card>
-  //     </div>
-  //   );
-  // }
+  if (!isAdmin) {
+    return (
+      <div className={cn("flex items-center justify-center p-6")}>
+        <Card className={cn("w-full max-w-md border-red-500")}>
+          <CardHeader>
+            <div className={cn("flex items-center gap-3")}>
+              <ShieldAlert className={cn("h-8 w-8 text-red-500")} />
+              <CardTitle className={cn("text-red-500")}>
+                Access Denied
+              </CardTitle>
+            </div>
+            <CardDescription>
+              You don't have permission to access this resource
+            </CardDescription>
+          </CardHeader>
+          <CardContent className={cn("space-y-3")}>
+            <p className={cn("text-sm text-slate-500 dark:text-slate-400")}>
+              The reporting dashboard is restricted to administrators only.
+            </p>
+            <p className={cn("text-sm text-slate-500 dark:text-slate-400")}>
+              If you believe this is an error, please contact your system
+              administrator.
+            </p>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
 
   return (
     <div
